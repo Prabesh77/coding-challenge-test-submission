@@ -41,7 +41,7 @@
 
 @media (min-width: 480px) {
   .fieldset {
-    margin: var(--spacing-xl) auto;
+    margin: var(--spacing-sm) auto;
     padding: var(--spacing-sm) 0;
   }
   
