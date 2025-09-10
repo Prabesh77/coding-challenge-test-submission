@@ -8,6 +8,7 @@ interface ButtonProps {
   onClick?: () => void;
   type?: ButtonType;
   variant?: ButtonVariant;
+  size?: 'small' | 'medium';
   loading?: boolean;
   children: React.ReactNode;
 }
@@ -17,6 +18,7 @@ const Button: FunctionComponent<ButtonProps> = ({
   onClick,
   type = "button",
   variant = "primary",
+  size = "medium",
   loading = false,
 }) => {
   return (
@@ -24,6 +26,7 @@ const Button: FunctionComponent<ButtonProps> = ({
       className={cx($.button, {
         [$.primary]: variant === "primary",
         [$.secondary]: variant === "secondary",
+        [$.small]: size === "small",
       })}
       type={type}
       onClick={onClick}

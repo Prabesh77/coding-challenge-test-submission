@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppSelector } from "../../../core/store/hooks";
 
-import useAddressBook from "../../hooks/useAddressBook";
+import useAddressBook from "@/hooks/useAddressBook";
 import Address from "../Address/Address";
 import Button from "../Button/Button";
 import Card from "../Card/Card";

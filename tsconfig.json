@@ -27,7 +27,7 @@
         "src/types"
       ],
       "@/hooks/*": [
-        "src/ui/hooks/*"
+        "src/hooks/*"
       ],
       "@/components/*": [
         "src/ui/components/*"
