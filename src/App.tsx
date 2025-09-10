@@ -122,22 +122,25 @@ function App() {
                 placeholder="House number"
               />
             </div>
-            <Button type="submit">Find</Button>
+            <Button type="submit" variant="primary">Find</Button>
           </fieldset>
         </form>
-        {addresses.length > 0 &&
-          addresses.map((address) => {
-            return (
-              <Radio
-                name="selectedAddress"
-                id={address.id}
-                key={address.id}
-                onChange={handleSelectedAddressChange}
-              >
-                <Address {...address} />
-              </Radio>
-            );
-          })}
+        {addresses.length > 0 && (
+          <div className="radioContainer">
+            {addresses.map((address) => {
+              return (
+                <Radio
+                  name="selectedAddress"
+                  id={address.id}
+                  key={address.id}
+                  onChange={handleSelectedAddressChange}
+                >
+                  <Address {...address} />
+                </Radio>
+              );
+            })}
+          </div>
+        )}
         {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
         {selectedAddress && (
           <form onSubmit={handlePersonSubmit}>
@@ -159,7 +162,7 @@ function App() {
                   value={lastName}
                 />
               </div>
-              <Button type="submit">Add to addressbook</Button>
+              <Button type="submit" variant="primary">Add to addressbook</Button>
             </fieldset>
           </form>
         )}

@@ -2,8 +2,28 @@
   background: var(--color-background);
   border-radius: var(--border-radius-default);
   border: 1px solid var(--color-border);
-  font-size: inherit;
+  font-size: var(--font-size-base);
   max-width: var(--width-input);
-  padding: 0.5em;
+  padding: var(--spacing-xs) var(--spacing-sm);
   width: 100%;
+  min-height: 44px; /* Minimum touch target size */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputText:focus {
+  outline: none;
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 2px rgba(65, 62, 247, 0.1);
+}
+
+.inputText::placeholder {
+  color: var(--color-text-light);
+  font-size: var(--font-size-sm);
+}
+
+@media (min-width: 480px) {
+  .inputText {
+    font-size: var(--font-size-lg);
+    padding: var(--spacing-sm);
+  }
 }

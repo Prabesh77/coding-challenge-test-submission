@@ -4,11 +4,12 @@
   border: 1px solid var(--color-brand);
   cursor: pointer;
   display: flex;
-  gap: 1rem;
-  margin: 1rem 0;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-sm) auto;
   max-width: var(--width-input);
-  padding: 1em;
+  padding: var(--spacing-sm);
   width: 100%;
+  justify-content: center;
 }
 
 .radio:hover {

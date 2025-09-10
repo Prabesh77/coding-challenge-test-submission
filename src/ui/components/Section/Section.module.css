@@ -3,10 +3,26 @@
   border-radius: var(--border-radius-xl);
   box-shadow: 0 15px 15px rgba(0, 0, 0, 0.15);
   color: var(--color-text);
-  margin: 3rem auto;
+  margin: var(--spacing-lg) auto;
   max-width: var(--width-content);
-  padding: 2rem 3rem;
+  padding: var(--spacing-md);
   width: 100%;
+  text-align: center;
+}
+
+@media (min-width: 480px) {
+  .section {
+    margin: var(--spacing-xl) auto;
+    padding: var(--spacing-lg);
+  }
+}
+
+@media (min-width: 768px) {
+  .section {
+    margin: var(--spacing-xl) auto;
+    padding: var(--spacing-lg) var(--spacing-sm);
+    text-align: center;
+  }
 }
 
 .dark {
