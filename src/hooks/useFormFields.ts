@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useFieldValidation, FieldValidation } from './useFieldValidation';
 
 export interface FormFields {
   [key: string]: string;
@@ -13,6 +14,14 @@ export interface UseFormFieldsReturn {
   error: string | undefined;
   setAddresses: (addresses: any[]) => void;
   addresses: any[];
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+  fieldValidations: FieldValidation;
+  validateField: (fieldName: string, value: string) => void;
+  markFieldTouched: (fieldName: string) => void;
+  clearFieldValidation: (fieldName: string) => void;
+  clearAllValidations: () => void;
+  isFormValid: boolean;
 }
 
 
@@ -20,7 +29,17 @@ export const useFormFields = (initialFields: FormFields = {}): UseFormFieldsRetu
   const [formFields, setFormFields] = useState<FormFields>(initialFields);
   const [error, setError] = useState<string | undefined>(undefined);
   const [addresses, setAddresses] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
+  // Field validation hook
+  const {
+    fieldValidations,
+    validateField: validateFieldValue,
+    markFieldTouched,
+    clearFieldValidation,
+    clearAllValidations,
+    isFormValid
+  } = useFieldValidation();
 
   const handleFieldChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,15 +47,20 @@ export const useFormFields = (initialFields: FormFields = {}): UseFormFieldsRetu
       ...prev,
       [name]: value
     }));
-  }, []);
-
+    
+    // Validate field on change
+    validateFieldValue(name, value);
+  }, [validateFieldValue]);
 
   const setFieldValue = useCallback((fieldName: string, value: string) => {
     setFormFields(prev => ({
       ...prev,
       [fieldName]: value
     }));
-  }, []);
+    
+    // Validate field when value is set
+    validateFieldValue(fieldName, value);
+  }, [validateFieldValue]);
 
   /**
    * Clear all form fields and reset to initial state
@@ -45,7 +69,9 @@ export const useFormFields = (initialFields: FormFields = {}): UseFormFieldsRetu
     setFormFields(initialFields);
     setError(undefined);
     setAddresses([]);
-  }, [initialFields]);
+    setLoading(false);
+    clearAllValidations();
+  }, [initialFields, clearAllValidations]);
 
   return {
     formFields,
@@ -55,6 +81,14 @@ export const useFormFields = (initialFields: FormFields = {}): UseFormFieldsRetu
     setError,
     error,
     setAddresses,
-    addresses
+    addresses,
+    loading,
+    setLoading,
+    fieldValidations,
+    validateField: validateFieldValue,
+    markFieldTouched,
+    clearFieldValidation,
+    clearAllValidations,
+    isFormValid
   };
 };

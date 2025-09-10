@@ -153,7 +153,7 @@ fieldset {
   border: none;
   border-bottom: 1px solid var(--color-accent);
   border-top: 1px solid var(--color-accent);
-  margin: var(--spacing-lg) auto;
+  margin: var(--spacing-md) auto;
   max-width: var(--width-input);
   padding: var(--spacing-sm) 0;
   width: 100%;
@@ -188,7 +188,7 @@ legend {
 
 @media (min-width: 480px) {
   fieldset {
-    margin: var(--spacing-xl) 0;
+    margin: var(--spacing-sm) 0;
     padding: var(--spacing-sm) 0;
   }
   

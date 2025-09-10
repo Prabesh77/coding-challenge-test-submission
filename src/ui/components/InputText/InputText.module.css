@@ -1,9 +1,15 @@
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--width-input);
+}
+
 .inputText {
   background: var(--color-background);
   border-radius: var(--border-radius-default);
   border: 1px solid var(--color-border);
   font-size: var(--font-size-base);
-  max-width: var(--width-input);
   padding: var(--spacing-xs) var(--spacing-sm);
   width: 100%;
   min-height: 44px; /* Minimum touch target size */
@@ -16,9 +22,27 @@
   box-shadow: 0 0 0 2px rgba(65, 62, 247, 0.1);
 }
 
+.inputText.error {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1);
+}
+
+.inputText.error:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+}
+
 .inputText::placeholder {
   color: var(--color-text-light);
   font-size: var(--font-size-sm);
+}
+
+.errorMessage {
+  color: #dc2626;
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-xs);
+  padding-left: var(--spacing-xs);
+  font-weight: 500;
 }
 
 @media (min-width: 480px) {

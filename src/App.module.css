@@ -1,37 +1,8 @@
-.error {
-  color: #dc2626;
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  background: rgba(220, 38, 38, 0.1);
-  border: 1px solid rgba(220, 38, 38, 0.2);
-  border-radius: var(--border-radius-default);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  margin: var(--spacing-sm) auto;
-  text-align: center;
-  max-width: var(--width-input);
-  width: 100%;
-}
+/* Error styles moved to ErrorMessage component */
 
-.formRow {
-  margin-bottom: var(--spacing-sm);
-  width: 100%;
+.clearButtonContainer {
+  margin-top: var(--spacing-lg);
   display: flex;
   justify-content: center;
-  align-items: center;
-}
-
-.formRow > * {
   width: 100%;
-  max-width: var(--width-input);
-}
-
-@media (min-width: 480px) {
-  .error {
-    font-size: var(--font-size-base);
-    padding: var(--spacing-sm);
-  }
-  
-  .formRow {
-    margin-bottom: var(--spacing-md);
-  }
 }

@@ -26,6 +26,7 @@ const Button: FunctionComponent<ButtonProps> = ({
       className={cx($.button, {
         [$.primary]: variant === "primary",
         [$.secondary]: variant === "secondary",
+        [$.danger]: variant === "danger",
         [$.small]: size === "small",
       })}
       type={type}
