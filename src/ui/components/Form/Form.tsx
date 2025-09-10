@@ -27,6 +27,8 @@ interface InputTextField extends BaseFormField {
 // Radio specific properties
 interface RadioField extends BaseFormField {
   type: 'radio';
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   checked?: boolean;
   children?: ReactNode;
   extraProps?: Omit<React.InputHTMLAttributes<HTMLInputElement>, 
@@ -78,12 +80,17 @@ const Form: FunctionComponent<FormProps> = ({
       }
       case 'radio': {
         const { extraProps, ...radioProps } = field;
+        const uniqueId = `${field.name}-${index}`;
+        const isChecked = field.checked !== undefined ? field.checked : false;
+        
         return (
           <Radio
-            key={`${field.name}-${index}`}
-            id={field.name}
+            key={uniqueId}
+            id={uniqueId}
             name={field.name}
-            checked={field.checked}
+            value={field.value}
+            onChange={field.onChange}
+            checked={isChecked}
             {...extraProps}
           >
             {field.children}

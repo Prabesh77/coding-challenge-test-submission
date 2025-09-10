@@ -7,6 +7,36 @@ export interface ValidationResult {
   errorMessage?: string;
 }
 
+// Name validation constants
+const NAME_MIN = 2;
+const NAME_MAX = 50;
+const NAME_PATTERN = /^[\p{L}\p{M}\s\-\u2019']+$/u;
+
+/**
+ * Helper function to validate names with Unicode support
+ */
+const validateName = (label: "First name" | "Last name", input: string): ValidationResult => {
+  const trimmedInput = input.trim();
+  
+  if (!trimmedInput) {
+    return { isValid: false, errorMessage: `${label} is required` };
+  }
+
+  if (trimmedInput.length < NAME_MIN) {
+    return { isValid: false, errorMessage: `${label} must be at least ${NAME_MIN} characters long` };
+  }
+
+  if (trimmedInput.length > NAME_MAX) {
+    return { isValid: false, errorMessage: `${label} must be less than ${NAME_MAX} characters` };
+  }
+
+  if (!NAME_PATTERN.test(trimmedInput)) {
+    return { isValid: false, errorMessage: `${label} can only contain letters, spaces, hyphens, and apostrophes` };
+  }
+
+  return { isValid: true };
+};
+
 /**
  * Validates postcode format (Australian postcode pattern)
  */
@@ -47,67 +77,32 @@ export const validateHouseNumber = (houseNumber: string): ValidationResult => {
  * Validates first name
  */
 export const validateFirstName = (firstName: string): ValidationResult => {
-  if (!firstName.trim()) {
-    return { isValid: false, errorMessage: "First name is required" };
-  }
-
-  if (firstName.trim().length < 2) {
-    return { isValid: false, errorMessage: "First name must be at least 2 characters long" };
-  }
-
-  if (firstName.trim().length > 50) {
-    return { isValid: false, errorMessage: "First name must be less than 50 characters" };
-  }
-
-  // Only allow letters, spaces, hyphens, and apostrophes
-  const namePattern = /^[A-Za-z\s\-\']+$/;
-  
-  if (!namePattern.test(firstName.trim())) {
-    return { isValid: false, errorMessage: "First name can only contain letters, spaces, hyphens, and apostrophes" };
-  }
-
-  return { isValid: true };
+  return validateName("First name", firstName);
 };
 
 /**
  * Validates last name
  */
 export const validateLastName = (lastName: string): ValidationResult => {
-  if (!lastName.trim()) {
-    return { isValid: false, errorMessage: "Last name is required" };
-  }
-
-  if (lastName.trim().length < 2) {
-    return { isValid: false, errorMessage: "Last name must be at least 2 characters long" };
-  }
-
-  if (lastName.trim().length > 50) {
-    return { isValid: false, errorMessage: "Last name must be less than 50 characters" };
-  }
-
-  // Only allow letters, spaces, hyphens, and apostrophes
-  const namePattern = /^[A-Za-z\s\-\']+$/;
-  
-  if (!namePattern.test(lastName.trim())) {
-    return { isValid: false, errorMessage: "Last name can only contain letters, spaces, hyphens, and apostrophes" };
-  }
-
-  return { isValid: true };
+  return validateName("Last name", lastName);
 };
 
 /**
  * Validates address selection
  */
-export const validateAddressSelection = (selectedAddress: string, addresses: any[]): ValidationResult => {
-  if (!selectedAddress) {
+export const validateAddressSelection = (selectedAddress: string | number | null | undefined, addresses: { id: string }[]): ValidationResult => {
+  // Check for null/undefined explicitly instead of falsy check
+  if (selectedAddress == null) {
     return { isValid: false, errorMessage: "Please select an address" };
   }
 
-  if (!addresses.length) {
+  // Use explicit length check instead of falsy check
+  if (addresses.length === 0) {
     return { isValid: false, errorMessage: "No addresses available. Please search for an address first" };
   }
 
-  const foundAddress = addresses.find(address => address.id === selectedAddress);
+  // Normalize types when comparing to handle string/number ID mismatches
+  const foundAddress = addresses.find(address => String(address.id) === String(selectedAddress));
   
   if (!foundAddress) {
     return { isValid: false, errorMessage: "Selected address not found" };

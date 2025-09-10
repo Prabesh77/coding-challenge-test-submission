@@ -77,9 +77,38 @@ function App() {
       
       // Fetch addresses from API
       const response = await fetch(apiUrl);
-      const data = await response.json();
       
-      if (response.ok && data.status === "ok") {
+      // Check if response is ok before parsing
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
+      }
+      
+      // Check content type before parsing JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error(`Expected JSON response, got ${contentType || 'unknown content type'}`);
+      }
+      
+      // Parse JSON with error handling
+      let data;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        throw new Error(`Failed to parse JSON response: ${parseError instanceof Error ? parseError.message : 'Unknown parsing error'}`);
+      }
+      
+      // Validate required fields in response
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid response: expected object');
+      }
+      
+      if (data.status === "ok") {
+        // Validate details array exists and is array
+        if (!Array.isArray(data.details)) {
+          throw new Error('Invalid response: details field must be an array');
+        }
+        
         // Transform addresses using the transformAddress function
         const transformedAddresses = data.details.map((rawAddress: any) => {
           // Add the houseNumber to each address as required
@@ -91,18 +120,21 @@ function App() {
         });
         
         setAddresses(transformedAddresses);
+        setError(undefined);
         
         // Reset form fields after successful address search (but keep addresses)
         setFieldValue("postCode", "");
         setFieldValue("houseNumber", "");
         clearAllValidations();
       } else {
-        // Handle API error responses
-        setError(data.errormessage || "Failed to fetch addresses");
+        // Handle API error responses with proper error message
+        const errorMessage = data.errormessage || data.error || "Failed to fetch addresses";
+        throw new Error(errorMessage);
       }
     } catch (error) {
-      // Handle network or other errors
-      setError("Network error occurred while fetching addresses");
+      // Handle network, parsing, or validation errors
+      const errorMessage = error instanceof Error ? error.message : "Unknown error occurred while fetching addresses";
+      setError(errorMessage);
       console.error("Address fetch error:", error);
     } finally {
       setLoading(false);
@@ -193,6 +225,7 @@ function App() {
                 <Radio
                   name="selectedAddress"
                   id={address.id}
+                  value={address.id}
                   key={address.id}
                   onChange={handleFieldChange}
                   checked={formFields.selectedAddress === address.id}

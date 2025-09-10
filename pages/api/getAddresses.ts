@@ -10,7 +10,11 @@ export default async function handle(
     query: { postcode, streetnumber },
   } = req;
 
-  if (!postcode || !streetnumber) {
+  // Normalize query parameters to single strings
+  const postcodeStr = Array.isArray(postcode) ? postcode[0] : postcode ?? '';
+  const streetnumberStr = Array.isArray(streetnumber) ? streetnumber[0] : streetnumber ?? '';
+
+  if (!postcodeStr || !streetnumberStr) {
     return res.status(400).send({
       status: "error",
       // DO NOT MODIFY MSG - used for grading
@@ -18,7 +22,7 @@ export default async function handle(
     });
   }
 
-  if (postcode.length < 4) {
+  if (postcodeStr.length < 4) {
     return res.status(400).send({
       status: "error",
       // DO NOT MODIFY MSG - used for grading
@@ -45,15 +49,15 @@ export default async function handle(
   };
 
   // Validate postcode and street number using the refactored function
-  const postcodeValidation = validateNumericField(postcode as string, "Postcode");
+  const postcodeValidation = validateNumericField(postcodeStr, "Postcode");
   if (postcodeValidation) return postcodeValidation;
 
-  const streetNumberValidation = validateNumericField(streetnumber as string, "Street Number");
+  const streetNumberValidation = validateNumericField(streetnumberStr, "Street Number");
   if (streetNumberValidation) return streetNumberValidation;
 
   const mockAddresses = generateMockAddresses(
-    postcode as string,
-    streetnumber as string
+    postcodeStr,
+    streetnumberStr
   );
   if (mockAddresses) {
     const timeout = (ms: number) => {

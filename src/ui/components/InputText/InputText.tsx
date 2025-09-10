@@ -24,7 +24,7 @@ const InputText: FunctionComponent<InputTextProps> = ({
   touched = false,
   showValidation = false,
 }) => {
-  const hasError = showValidation && touched && error;
+  const hasError = !!(showValidation && touched && error);
   
   return (
     <div className={$.inputContainer}>
@@ -47,7 +47,6 @@ const InputText: FunctionComponent<InputTextProps> = ({
           id={`${name}-error`}
           className={$.errorMessage}
           role="alert"
-          aria-live="polite"
         >
           {error}
         </div>

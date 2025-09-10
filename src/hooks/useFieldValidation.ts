@@ -63,7 +63,7 @@ export const useFieldValidation = (): UseFieldValidationReturn => {
     setFieldValidations(prev => ({
       ...prev,
       [fieldName]: {
-        ...prev[fieldName],
+        ...(prev[fieldName] || {}),
         touched: true
       }
     }));

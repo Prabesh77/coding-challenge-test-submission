@@ -5,11 +5,12 @@ import cx from "classnames";
 import $ from "./Button.module.css";
 
 interface ButtonProps {
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   type?: ButtonType;
   variant?: ButtonVariant;
   size?: 'small' | 'medium';
   loading?: boolean;
+  disabled?: boolean;
   children: React.ReactNode;
 }
 
@@ -20,7 +21,10 @@ const Button: FunctionComponent<ButtonProps> = ({
   variant = "primary",
   size = "medium",
   loading = false,
+  disabled = false,
 }) => {
+  const combinedDisabled = disabled || loading;
+  
   return (
     <button
       className={cx($.button, {
@@ -31,7 +35,9 @@ const Button: FunctionComponent<ButtonProps> = ({
       })}
       type={type}
       onClick={onClick}
-      disabled={loading}
+      disabled={combinedDisabled}
+      aria-busy={loading}
+      aria-disabled={combinedDisabled}
     >
       {loading && (
         <div 
