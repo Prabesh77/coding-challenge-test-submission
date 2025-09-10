@@ -19,7 +19,7 @@
 
 @media (min-width: 768px) {
   .section {
-    margin: var(--spacing-xl) auto;
+    margin: var(--spacing-sm) auto;
     padding: var(--spacing-lg) var(--spacing-sm);
     text-align: center;
   }
